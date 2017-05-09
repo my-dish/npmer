@@ -14,7 +14,8 @@ const spawn = require('cross-spawn');
 function install(command, args) {
   if (command === 'yarn') {
     if (args[0] === '-S') {
-      args[0] = '';
+      args.shift();
+
       spawn.sync('yarn', [
         'add',
         ...args
@@ -22,6 +23,7 @@ function install(command, args) {
     }
     if (args[0] === '-D') {
       args[0] = '--dev';
+
       spawn.sync('yarn', [
         'add',
         ...args
