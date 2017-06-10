@@ -1,6 +1,5 @@
 'use strict';
 
-const fs    = require('fs');
 const path  = require('path');
 const rc    = require('rc');
 const spawn = require('cross-spawn');
@@ -75,6 +74,19 @@ function installTemplates(templateURL) {
 }
 
 /**
+ * @param {string} templateURL
+ */
+function uninstallTemplates(templateURL) {
+  const commonURL = '@my-dish/template-common';
+
+  spawn.sync('npm', [
+    'uninstall',
+    commonURL,
+    templateURL
+  ], { stdio: 'inherit' });
+}
+
+/**
  * @param {Object} npm - created by dish
  * @param {string} projectName
  */
@@ -83,9 +95,9 @@ function createPackageJSON(npm, projectName) {
 
   const author =
     (
-      (npmrc['init.author.name'] ? npmrc['init.author.name'] : '') + ' ' +
-      (npmrc['init.author.email'] ? `<${npmrc['init.author.email']}` : '') + ' ' +
-      (npmrc['init.author.url'] ? npmrc['init.author.url'] : '')
+      `${npmrc['init.author.name'] ? npmrc['init.author.name'] : '' } ${
+      npmrc['init.author.email'] ? `<${npmrc['init.author.email']}` : '' } ${
+      npmrc['init.author.url'] ? npmrc['init.author.url'] : ''}`
     ).trim();
 
   const packageInfo = {
@@ -103,11 +115,15 @@ function createPackageJSON(npm, projectName) {
     });
   }
 
-  return JSON.stringify(Object.assign(packageInfo, npm.tasks, npm.env), null, 2);
+  return JSON.stringify(
+    Object.assign(packageInfo, npm.tasks, npm.env),
+    null, 2
+  );
 }
 
 module.exports = {
   installPackages,
   installTemplates,
-  createPackageJSON
+  createPackageJSON,
+  uninstallTemplates
 };
