@@ -19,6 +19,9 @@
     "test": "nyc ava",
     "postcover": "nyc npm test && nyc report --reporter=text-lcov > coverage.lcov && codecov"
   },
+  "bin": {
+    "packer": "./bin/packer.js"
+  },
   "ava": {
     "files": [
       "test/**/*.js"
@@ -36,6 +39,7 @@
   },
   "dependencies": {
     "cross-spawn": "^5.1.0",
+    "fs-extra": "^3.0.1",
     "rc": "^1.2.1"
   }
 }
