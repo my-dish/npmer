@@ -27,20 +27,19 @@ if (commands[0] === '--debug') {
   const outputPath = path.join(process.cwd(), 'build');
 
   if (fs.pathExistsSync(npmPath)) {
-    const npm = require(npmPath);
-    const packageJSON = packer.createPackageJSON(npm, 'debug');
-
     if (!fs.pathExistsSync(outputPath)) {
       fs.ensureDirSync(outputPath);
     }
-
-    fs.writeJsonSync(path.join(outputPath, 'package.json'), JSON.parse(packageJSON));
 
     process.chdir(outputPath);
 
     if (commands[1] === '--reload' ||
       !fs.pathExistsSync(path.join(outputPath, 'node_modules'))
     ) {
+      const npm = require(npmPath);
+      const packageJSON = packer.createPackageJSON(npm, 'debug');
+
+      fs.writeJsonSync(path.join(outputPath, 'package.json'), JSON.parse(packageJSON));
       packer.installPackages('npm', npm.packages.dependencies, npm.packages.devDependencies);
     }
 
