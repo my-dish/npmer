@@ -103,10 +103,10 @@ function createPackageJSON(npm, projectName) {
 
   const packageInfo = {
     name       : projectName,
-    main       : npm.settings.main ? path.join(npm.settings.main, 'index.js') : undefined,
-    author     : !!author ? author : undefined,
+    main       : npm.settings.main,
+    author     : author,
     version    : '0.0.1',
-    license    : !!npmrc['init.license'] ? npmrc['init.license'] : 'ISC',
+    license    : npmrc['init.license'] || 'ISC',
     description: ''
   };
 
