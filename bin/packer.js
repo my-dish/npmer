@@ -36,6 +36,8 @@ if (commands[0] === '--debug') {
 
     fs.writeJsonSync(path.join(outputPath, 'package.json'), JSON.parse(packageJSON));
 
+    process.chdir(outputPath);
+
     if (commands[1] === '--reload' ||
       !fs.pathExistsSync(path.join(outputPath, 'node_modules'))
     ) {
