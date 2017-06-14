@@ -18,3 +18,8 @@ packer.installTemplate();
 packer.createPackageJSON();
 packer.installPackages();
 ```
+
+### CLI
+```sh
+$ packer --debug [--reload]
+```

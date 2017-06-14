@@ -1,5 +1,6 @@
 #!/usr/bin/env node
 
+/* eslint-disable no-console */
 'use strict';
 
 
@@ -17,11 +18,30 @@ if (commands[0] === '-v' || commands[0] === '--version') {
 }
 
 if (commands[0] === '--debug') {
+  const path = require('path');
   const fs = require('fs-extra');
   const packer = require('../');
 
-  const npmPath = `${process.cwd()}/npm`;
+  const rootPath = process.cwd();
+  const npmPath = path.join(process.cwd(), 'npm');
+  const outputPath = path.join(process.cwd(), 'build');
 
   if (fs.pathExistsSync(npmPath)) {
+    const npm = require(npmPath);
+    const packageJSON = packer.createPackageJSON(npm, 'debug');
+
+    if (!fs.pathExistsSync(outputPath)) {
+      fs.ensureDirSync(outputPath);
+    }
+
+    fs.writeJsonSync(path.join(outputPath, 'package.json'), JSON.parse(packageJSON));
+
+    if (commands[1] === '--reload' ||
+      !fs.pathExistsSync(path.join(outputPath, 'node_modules'))
+    ) {
+      packer.installPackages('npm', npm.packages.dependencies, npm.packages.devDependencies);
+    }
+
+    fs.copySync(path.join(rootPath, 'template'), outputPath);
   }
 }

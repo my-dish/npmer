@@ -7,6 +7,7 @@ const spawn = require('cross-spawn');
 /**
  * execute install
  *
+ * @private
  * @param {string} command - npm or yarn
  * @param {Array<string>} args
  */
